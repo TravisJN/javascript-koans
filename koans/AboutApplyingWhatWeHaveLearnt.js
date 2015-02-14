@@ -241,6 +241,37 @@ describe("About Applying What We Have Learnt", function() {
 
   it("should find the 10001st prime", function () {
   
+    function _10001stPrime() {
+      var count = 0;
+      var num = 1;
+
+      //increment each number checking if it's prime, if so add one to count until
+      //reaching the 10001st prime
+      while(count < 10001) {
+        if (isPrime(num)){
+          count++;
+          num++;
+        } else {
+          num++;
+        }
+      }
+      //subtract one because num is incremented on every loop so it will be incremented
+      //after it reaches the final result
+      return num - 1;
+    }
+
+    function isPrime(num) {
+      var start = 2;  //start at 2 because all numbers are divisible by 1
+      for (var i = start; i < num; i++) {
+        if (num % i === 0) {
+          return false;
+        }
+      }
+      //if loop completes there are no divisible numbers then num is prime
+      return true;
+    }
+
+    expect(_10001stPrime()).toBe(104729);
   });
   
 });
