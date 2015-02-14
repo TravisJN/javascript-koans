@@ -139,20 +139,108 @@ describe("About Applying What We Have Learnt", function() {
   });
 
   it("should find the largest palindrome made from the product of two 3 digit numbers", function () {
+    function largestPalindrome(num1, num2) {
+      var largest = "1";
+      var number = (num1 * num2).toString().split("");
+      var reverse = (num1 * num2).toString().split("").reverse();
+     
+      while(number.length > 1) {
+        console.log(number);
+        console.log(reverse);
+        if (compareArray(number, reverse) && number.length > largest.length) {
+          largest = number.join("");
+        } 
+        number.splice(0,1);
+        reverse.splice(-1);        
+      }
+
+      number = (num1 * num2).toString().split("");
+      reverse = (num1 * num2).toString().split("").reverse();
+
+      while(number.length > 1) {
+        console.log(number);
+        console.log(reverse);
+        if (compareArray(number, reverse) && number.length > largest.length) {
+          largest = number.join("");
+        } 
+        number.splice(-1);
+        reverse.splice(0, 1);        
+      }
+
+      return largest;
+
+    }
+
+    //cannot directly compare arrays so must loop through them and compare each value
+    function compareArray(array1, array2) {
+      for (var i = 0; i < array1.length; i++) {
+        if (array1[i] !== array2[i]) {
+          return false;
+        }
+      }
+      return true;
+    }
     
+    //expect(largestPalindrome(927, 217)).toBe('11');
   });
 
   it("should find the smallest number divisible by each of the numbers 1 to 20", function () {
-      
-    
+      function smallestDivisible() {
+        var collection = [];
+
+        //create an array of 1 through 20
+        for (var i = 1; i <= 20; i++) {
+          collection.push(i);
+        }
+        
+        //find least common multiple of each number in range using reduce
+        var smallest = _.reduce(collection, function(tally, x) {
+          return leastCommonMultiple(tally, x);
+        })
+
+        return smallest;
+      }
+
+      //this function takes two arguments and finds the least commmon multiple between them
+      function leastCommonMultiple(a, b) {
+        multipleA = a,
+        multipleB = b;
+
+        //starting with the original arguments, increment by itself until both numbers are equal
+        //that will be the lowest common multiple
+        while (a !== b) {
+          if (a < b) {
+            a += multipleA;
+          } else {
+            b += multipleB;
+          }
+        }
+
+        //both numbers are equal so only need to return one
+        return a;
+      }
+
+    expect(smallestDivisible()).toBe(232792560);
   });
 
   it("should find the difference between the sum of the squares and the square of the sums", function () {
-    
+    function squareDifference(num1, num2) {
+      var sum = _.reduce([num1, num2], function(tally, x) {
+        return tally + x * x;
+      }, 0);
+
+      var squareOfSums = _.reduce([num1, num2], function(tally, x) {
+        return (tally + num2) * (tally + num2);
+      });
+
+      return squareOfSums - sum;
+    }
+
+    expect(squareDifference(2, 3)).toBe(12);
   });
 
   it("should find the 10001st prime", function () {
-
+  
   });
   
 });
