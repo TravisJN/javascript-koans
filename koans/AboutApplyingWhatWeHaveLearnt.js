@@ -139,36 +139,40 @@ describe("About Applying What We Have Learnt", function() {
   });
 
   it("should find the largest palindrome made from the product of two 3 digit numbers", function () {
+    //made these global for scope when calling the findPalindrome() function, don't know if it's
+    //more efficient to pass them around between functions or declare them globally
+    var largest = "1";  //the length of the longest palindrome that has been found 
+    var palindrome = [];
+
     function largestPalindrome(num1, num2) {
-      var largest = "1";
+      
       var number = (num1 * num2).toString().split("");
       var reverse = (num1 * num2).toString().split("").reverse();
-     
-      while(number.length > 1) {
-        console.log(number);
-        console.log(reverse);
-        if (compareArray(number, reverse) && number.length > largest.length) {
-          largest = number.join("");
-        } 
-        number.splice(0,1);
-        reverse.splice(-1);        
+    
+      //findPalindrome loops through number removing the first digit of number each iteration
+      findPalindrome(number, reverse);
+      //call function again to remove the last digit of number on each iteration
+      findPalindrome(reverse, number);
+
+      //if number is an even length, the findPalindrome calls above will not compare the two middle digits
+      if (number.length % 2 === 0) {
+        findPalindrome([number[number.length / 2], number[number.length / 2 - 1]], [reverse[reverse.length / 2], reverse[reverse.length / 2 - 1]]);
       }
 
-      number = (num1 * num2).toString().split("");
-      reverse = (num1 * num2).toString().split("").reverse();
+      return palindrome.join("");
+    }
 
-      while(number.length > 1) {
-        console.log(number);
-        console.log(reverse);
-        if (compareArray(number, reverse) && number.length > largest.length) {
-          largest = number.join("");
-        } 
-        number.splice(-1);
-        reverse.splice(0, 1);        
+    //loop through the number, removing one digit at a time to compare to reverse and find palindromes
+    function findPalindrome(number, reverse) {
+      while (number.length > 1) {
+        if (compareArray(number, reverse) && number.length > largest){
+          palindrome = number;
+          largest = palindrome.length;
+        }
+
+        number = _.initial(number);
+        reverse = _.rest(reverse);
       }
-
-      return largest;
-
     }
 
     //cannot directly compare arrays so must loop through them and compare each value
@@ -181,7 +185,7 @@ describe("About Applying What We Have Learnt", function() {
       return true;
     }
     
-    //expect(largestPalindrome(927, 217)).toBe('11');
+    expect(largestPalindrome(345, 129)).toBe('505');
   });
 
   it("should find the smallest number divisible by each of the numbers 1 to 20", function () {
